@@ -1,0 +1,78 @@
+.layout-container {
+    display: flex;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.layout-sidebar {
+    width: 280px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    flex-shrink: 0;
+    z-index: 50;
+}
+
+.layout-main {
+    flex: 1;
+    border-right: 1px solid var(--color-border-subtle);
+    border-left: 1px solid var(--color-border-subtle);
+    min-height: 100vh;
+    width: 100%;
+    /* Ensure full width */
+}
+
+.layout-trends {
+    width: 350px;
+    padding: 1rem;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.layout-trends-box {
+    background-color: var(--color-bg-secondary);
+    border-radius: 16px;
+    padding: 1rem;
+    border: 1px solid var(--color-border-subtle);
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+    .layout-trends {
+        display: none;
+    }
+
+    .layout-sidebar {
+        width: 80px;
+        /* Icon only mode could be implemented here if needed, but for now keeping it simple */
+    }
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+    .layout-container {
+        flex-direction: column;
+    }
+
+    .layout-sidebar {
+        width: 100%;
+        height: auto;
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        border-top: 1px solid var(--color-border-subtle);
+        background-color: var(--color-bg-primary);
+        padding: 0;
+    }
+
+    .layout-main {
+        border: none;
+        margin-bottom: 60px;
+        /* Space for bottom nav */
+        width: 100%;
+    }
+}
