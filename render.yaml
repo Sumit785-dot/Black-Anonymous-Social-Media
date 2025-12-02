@@ -21,3 +21,5 @@ services:
         value: "false"
       - key: ALLOWED_HOSTS
         value: "*"
+      - key: PYTHON_VERSION
+        value: "3.11.6"
