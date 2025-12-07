@@ -2,12 +2,10 @@ services:
   # Backend Service
   - type: web
     name: social-backend
-    env: python
-    buildCommand: pip install -r social_backend/requirements.txt
-    startCommand: gunicorn social_backend.config.wsgi:application
+    env: docker
+    dockerContext: ./social_backend
+    dockerfilePath: ./social_backend/Dockerfile
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.0
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG

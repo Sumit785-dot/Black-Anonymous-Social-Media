@@ -1,6 +1,7 @@
 asgiref==3.11.0
 whitenoise==6.6.0
 Django==3.2.23
+dj-database-url==2.1.0
 django-cors-headers==4.3.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.0
