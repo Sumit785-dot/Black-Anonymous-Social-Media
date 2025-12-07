@@ -14,7 +14,7 @@
 *   **Frontend:** React.js (Single Page Application - SPA) jo fast aur responsive hai.
 *   **Backend:** Django REST Framework (API Server) jo logic aur database handle karta hai.
 *   **Communication:** Frontend aur Backend **JSON APIs** ke through baat karte hain.
-
+*Cloudflare Tunnel
 **Q3: Django aur React hi kyu choose kiya?**
 **Ans:**
 *   **Django:** Security (Built-in protection against SQL Injection, XSS) aur rapid development ke liye best hai.
@@ -33,7 +33,7 @@
 ### 🕵️‍♂️ Deep Dive: IP Anonymity (Critical Questions)
 
 **Q5: Tum keh rahe ho IP store nahi ho raha, technically ye kaise possible hai?**
-**Ans:** Sir, normally Django har request ke saath `request.META['REMOTE_ADDR']` mein user ka IP receive karta hai. Maine ek custom **Middleware** (`AnonymizerMiddleware`) lagaya hai jo view function call hone se PEHLE hi execute hota hai. Ye middleware `REMOTE_ADDR` aur Cloudflare ke headers (`CF-Connecting-IP`) ko intercept karke unhe `0.0.0.0` (Null IP) se replace kar deta hai. Isliye jab data view ya database tak pahunchta hai, IP exist hi nahi karta.
+**Ans:** Sir, normally Django har request ke saath `request.META['REMOTE_ADDR']` mein user ka IP receive karta hai. Maine ek custom **Middleware** (`AnonymizerMiddleware`) lagaya hai jo view function call hone se PEHLE hi execute hota hai. Ye middleware `REMOTE_ADDR` aur Cloudflare ke headers (`CF-Connecting-IP`) ko intercept karke unhe `0.0.0.0` (Null IP) se replace kar deta hai. Isli*Cloudflare Tunnela database tak pahunchta hai, IP exist hi nahi karta.
 
 **Q6: Database mein IP kyu nahi save kiya? Security reason ya Space saving?**
 **Ans:** Ye ek conscious **Privacy Design Decision** hai. Space saving issue nahi hai (IP string chhota hota hai). Reason ye hai ki agar kal ko database hack ho jaye ya leak ho jaye, toh attackers users ki physical location trace na kar sakein. Humara goal "Data Minimization" hai - sirf wahi data rakho jo app chalane ke liye zaruri hai (Username, Password), tracking data nahi.
@@ -125,3 +125,4 @@
 *   **Confident raho:** Agar koi answer nahi aata, toh ghumaane ki jagah bolo "Sir, I focused more on [Topic X], I will read about this."
 *   **Code dikhao:** Jab wo puche "Ye kaise kiya?", toh seedha code khol ke dikhao (especially `middleware.py` aur `models.py`). Teachers ko code dekh kar khushi hoti hai.
 *   **Flow samjhao:** Login -> Token mila -> API call hui -> Data aaya -> React ne dikhaya.
+*Cloudflare Tunnel

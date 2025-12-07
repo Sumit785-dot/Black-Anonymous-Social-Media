@@ -1,0 +1,52 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r social_backend/requirements.txt
+    - name: Run Tests
+      run: |
+        cd social_backend
+        python manage.py test
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - name: Install Dependencies
+      run: |
+        cd social_frontend
+        npm install
+    - name: Run Tests
+      run: |
+        cd social_frontend
+        npm test
+
+  build-docker:
+    needs: [test-backend, test-frontend]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build Backend Image
+      run: docker build -t social-backend ./social_backend
+    - name: Build Frontend Image
+      run: docker build -t social-frontend ./social_frontend

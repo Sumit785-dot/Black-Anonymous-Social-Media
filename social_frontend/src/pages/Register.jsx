@@ -51,8 +51,9 @@ const Register = () => {
                 {error && <div style={styles.error}>{error}</div>}
                 <form onSubmit={handleSubmit} style={styles.form}>
                     <div style={styles.inputGroup}>
-                        <label style={styles.label}>User ID (@handle)</label>
+                        <label htmlFor="user_id" style={styles.label}>User ID (@handle)</label>
                         <input
+                            id="user_id"
                             type="text"
                             name="user_id"
                             value={formData.user_id}
@@ -62,8 +63,9 @@ const Register = () => {
                         />
                     </div>
                     <div style={styles.inputGroup}>
-                        <label style={styles.label}>Name</label>
+                        <label htmlFor="name" style={styles.label}>Name</label>
                         <input
+                            id="name"
                             type="text"
                             name="name"
                             value={formData.name}
@@ -73,8 +75,9 @@ const Register = () => {
                     </div>
 
                     <div style={styles.inputGroup}>
-                        <label style={styles.label}>Password</label>
+                        <label htmlFor="password" style={styles.label}>Password</label>
                         <input
+                            id="password"
                             type="password"
                             name="password"
                             value={formData.password}
@@ -83,8 +86,9 @@ const Register = () => {
                         />
                     </div>
                     <div style={styles.inputGroup}>
-                        <label style={styles.label}>Pass Key (Secret for Login)</label>
+                        <label htmlFor="pass_key" style={styles.label}>Pass Key (Secret for Login)</label>
                         <input
+                            id="pass_key"
                             type="password"
                             name="pass_key"
                             value={formData.pass_key}

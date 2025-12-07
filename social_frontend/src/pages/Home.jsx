@@ -14,24 +14,25 @@ const Home = () => {
     const [page, setPage] = useState(feedCache.page || 1);
     const [hasMore, setHasMore] = useState(feedCache.hasMore !== undefined ? feedCache.hasMore : true);
 
-    const fetchPosts = async (pageNum = 1) => {
+    const fetchPosts = React.useCallback(async (pageNum = 1) => {
         try {
-            if (pageNum === 1 && posts.length === 0) setLoading(true);
+            if (pageNum === 1) setLoading(true);
 
             const response = await api.get(`/posts/?page=${pageNum}`);
 
-            let newPosts;
-            if (pageNum === 1) {
-                newPosts = response.data.results || [];
-            } else {
-                newPosts = [...posts, ...(response.data.results || [])];
-            }
+            setPosts(prevPosts => {
+                if (pageNum === 1) {
+                    return response.data.results || [];
+                } else {
+                    return [...prevPosts, ...(response.data.results || [])];
+                }
+            });
 
-            setPosts(newPosts);
             const newHasMore = response.data.next !== null;
             setHasMore(newHasMore);
 
             // Update cache
+            const newPosts = pageNum === 1 ? (response.data.results || []) : [...posts, ...(response.data.results || [])];
             updateFeedCache({
                 posts: newPosts,
                 page: pageNum,
@@ -43,21 +44,20 @@ const Home = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [updateFeedCache]); // Removed feedCache.posts from dependencies
 
     useEffect(() => {
-        // If we have cache, we don't strictly need to fetch immediately unless we want fresh data
-        // Stale-while-revalidate: show cache, fetch in background for page 1
-        if (page === 1) {
+        // Only fetch on initial mount if no cache
+        if (!feedCache.posts || feedCache.posts.length === 0) {
             fetchPosts(1);
         }
-    }, []); // Only run on mount for refresh
+    }, []); // Empty dependency array - only run once on mount
 
     useEffect(() => {
         if (page > 1) {
             fetchPosts(page);
         }
-    }, [page]);
+    }, [page]); // Only depend on page, not fetchPosts
 
     const handlePostCreated = () => {
         // Refresh feed from page 1

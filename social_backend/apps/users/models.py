@@ -24,13 +24,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.user_id
 
 class Follow(models.Model):
-    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
-    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following', db_index=True)  # Added index
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers', db_index=True)  # Added index
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('follower', 'following')
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['follower', 'following']),  # Composite index for follow queries
+        ]
 
     def __str__(self):
         return f"{self.follower.user_id} follows {self.following.user_id}"

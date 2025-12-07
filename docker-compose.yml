@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./social_backend
+    command: gunicorn --bind 0.0.0.0:8000 config.wsgi:application
+    volumes:
+      - ./social_backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-key
+      - ALLOWED_HOSTS=localhost,127.0.0.1,backend
+    # Healthcheck to ensure backend is ready before frontend tries to proxy
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8000"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build: ./social_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      # Mount nginx config for easier development updates if needed
+      - ./social_frontend/nginx.conf:/etc/nginx/conf.d/default.conf

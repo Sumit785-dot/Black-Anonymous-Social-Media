@@ -33,8 +33,9 @@ const Login = () => {
                 {error && <div style={styles.error}>{error}</div>}
                 <form onSubmit={handleSubmit} style={styles.form}>
                     <div style={styles.inputGroup}>
-                        <label style={styles.label}>Username</label>
+                        <label htmlFor="username" style={styles.label}>Username</label>
                         <input
+                            id="username"
                             type="text"
                             value={userId}
                             onChange={(e) => setUserId(e.target.value)}
@@ -42,8 +43,9 @@ const Login = () => {
                         />
                     </div>
                     <div style={styles.inputGroup}>
-                        <label style={styles.label}>Pass Key</label>
+                        <label htmlFor="passKey" style={styles.label}>Pass Key</label>
                         <input
+                            id="passKey"
                             type="password"
                             value={passKey}
                             onChange={(e) => setPassKey(e.target.value)}

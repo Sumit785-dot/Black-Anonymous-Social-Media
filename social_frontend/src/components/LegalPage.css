@@ -1,0 +1,124 @@
+.legal-page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    color: var(--color-text-primary);
+}
+
+.legal-page-header {
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--color-border-subtle);
+    padding-bottom: 2rem;
+}
+
+.legal-breadcrumb {
+    display: flex;
+    align-items: center;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.breadcrumb-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+}
+
+.breadcrumb-separator {
+    margin: 0 0.5rem;
+    color: var(--color-text-muted);
+}
+
+.breadcrumb-current {
+    color: var(--color-text-primary);
+    font-weight: 500;
+}
+
+.legal-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.025em;
+}
+
+.legal-updated {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.legal-content {
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.legal-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 2.5rem 0 1rem 0;
+    color: var(--color-text-primary);
+}
+
+.legal-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 2rem 0 0.75rem 0;
+    color: var(--color-text-primary);
+}
+
+.legal-content p {
+    margin-bottom: 1.5rem;
+    color: var(--color-text-secondary);
+}
+
+.legal-content ul,
+.legal-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    color: var(--color-text-secondary);
+}
+
+.legal-content li {
+    margin-bottom: 0.5rem;
+}
+
+.legal-content a {
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+}
+
+.legal-content a:hover {
+    color: var(--color-text-secondary);
+}
+
+.legal-section {
+    margin-bottom: 2rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .legal-page-container {
+        padding: 1.5rem 1rem 3rem;
+    }
+
+    .legal-title {
+        font-size: 2rem;
+    }
+
+    .legal-content {
+        font-size: 1rem;
+    }
+
+    .legal-content h2 {
+        font-size: 1.25rem;
+        margin-top: 2rem;
+    }
+}

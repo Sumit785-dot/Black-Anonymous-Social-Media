@@ -13,6 +13,14 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './styles/theme.css';
 import api from './services/api';
 
+// Legal Pages
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import CommunityGuidelines from './pages/CommunityGuidelines';
+import CopyrightPolicy from './pages/CopyrightPolicy';
+import About from './pages/About';
+import Contact from './pages/Contact';
+
 function App() {
   const [status, setStatus] = useState('loading');
 
@@ -32,6 +40,14 @@ function App() {
           </div>
 
           <Routes>
+            {/* Legal & Public Pages */}
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/guidelines" element={<CommunityGuidelines />} />
+            <Route path="/copyright" element={<CopyrightPolicy />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route

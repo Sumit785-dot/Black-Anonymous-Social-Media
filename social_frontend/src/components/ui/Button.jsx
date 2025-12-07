@@ -1,45 +1,47 @@
 import React from 'react';
-import './Button.css';
+import styles from './Button.module.css';
 
+/**
+ * Reusable Button Component
+ * 
+ * Variants: primary, secondary, danger, ghost
+ * Sizes: small, medium, large
+ */
 const Button = ({
     children,
     variant = 'primary',
-    size = 'md',
-    loading = false,
+    size = 'medium',
     disabled = false,
-    icon = null,
-    iconPosition = 'left',
+    loading = false,
     fullWidth = false,
     onClick,
     type = 'button',
+    className = '',
+    ariaLabel,
     ...props
 }) => {
-    const classNames = [
-        'btn',
-        `btn-${variant}`,
-        `btn-${size}`,
-        fullWidth && 'btn-full',
-        loading && 'btn-loading',
-        disabled && 'btn-disabled'
+    const buttonClasses = [
+        styles.button,
+        styles[variant],
+        styles[size],
+        fullWidth && styles.fullWidth,
+        loading && styles.loading,
+        className
     ].filter(Boolean).join(' ');
 
     return (
         <button
             type={type}
-            className={classNames}
+            className={buttonClasses}
             onClick={onClick}
             disabled={disabled || loading}
+            aria-label={ariaLabel}
             {...props}
         >
-            {loading && (
-                <span className="btn-spinner"></span>
-            )}
-            {!loading && icon && iconPosition === 'left' && (
-                <span className="btn-icon btn-icon-left">{icon}</span>
-            )}
-            <span className="btn-text">{children}</span>
-            {!loading && icon && iconPosition === 'right' && (
-                <span className="btn-icon btn-icon-right">{icon}</span>
+            {loading ? (
+                <span className={styles.spinner}></span>
+            ) : (
+                children
             )}
         </button>
     );

@@ -146,3 +146,98 @@ body {
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out forwards;
 }
+
+/* Mobile Responsiveness - Added for better UX */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  .container {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .post-card,
+  .postCard {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .navigation,
+  .nav-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    flex-direction: row;
+    justify-content: space-around;
+    background: var(--color-bg-primary, #000);
+    border-top: 1px solid var(--color-border-subtle, #333);
+    padding: 0.5rem 0;
+    z-index: 100;
+  }
+
+  .nav-text {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  .btn,
+  button {
+    font-size: 0.875rem;
+    padding: 0.625rem 1rem;
+  }
+}
+
+/* Accessibility - Focus Indicators */
+button:focus,
+input:focus,
+textarea:focus,
+a:focus {
+  outline: 2px solid var(--color-accent-primary, #fff);
+  outline-offset: 2px;
+}
+
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Ensure minimum touch target size for mobile */
+@media (max-width: 768px) {
+
+  button,
+  a,
+  .btn,
+  .nav-link {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

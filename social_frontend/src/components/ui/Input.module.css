@@ -1,0 +1,83 @@
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.inputWrapper.fullWidth {
+    width: 100%;
+}
+
+.label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-primary, #fff);
+}
+
+.required {
+    color: #dc2626;
+    margin-left: 0.25rem;
+}
+
+.input {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    background-color: var(--color-bg-secondary, #0a0a0a);
+    border: 1px solid var(--color-border-subtle, #333);
+    border-radius: var(--radius-lg, 0.75rem);
+    color: var(--color-text-primary, #fff);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.input::placeholder {
+    color: var(--color-text-muted, #555);
+}
+
+.input:focus {
+    border-color: var(--color-text-secondary, #888);
+    background-color: var(--color-bg-tertiary, #141414);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+}
+
+.input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--color-bg-primary, #000);
+}
+
+.input.error {
+    border-color: #dc2626;
+}
+
+.input.error:focus {
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.1);
+}
+
+textarea.input {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.errorText {
+    font-size: 0.875rem;
+    color: #dc2626;
+    margin-top: -0.25rem;
+}
+
+.helperText {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary, #888);
+    margin-top: -0.25rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .input {
+        padding: 0.75rem 1rem;
+        font-size: 16px;
+        /* Prevents zoom on iOS */
+    }
+}

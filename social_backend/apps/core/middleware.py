@@ -1,28 +1,41 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
 class AnonymizerMiddleware:
-    """
-    Middleware to aggressively remove IP addresses and location-identifying headers
-    from the request object before it reaches any view or logger.
-    """
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        # List of headers that contain IP or Location info
-        headers_to_scrub = [
-            'REMOTE_ADDR',
-            'HTTP_X_FORWARDED_FOR',
-            'HTTP_CF_CONNECTING_IP', # Cloudflare IP header
-            'HTTP_CF_IPCOUNTRY',     # Cloudflare Country header
-            'HTTP_X_REAL_IP',
-        ]
-
-        # Remove them from request.META
-        for header in headers_to_scrub:
-            if header in request.META:
-                del request.META[header]
-
-        # Explicitly set a fake IP to prevent any default behavior from finding the real one
+        # Scrub IP address from request META
         request.META['REMOTE_ADDR'] = '0.0.0.0'
+        request.META['HTTP_X_FORWARDED_FOR'] = '0.0.0.0'
+        return self.get_response(request)
 
+class SimpleAnalyticsMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Check for Do Not Track header
+        dnt = request.headers.get('DNT')
+        
         response = self.get_response(request)
+
+        if dnt == '1':
+            return response
+
+        # Log basic info without PII
+        # We don't log IP addresses or User IDs here to keep it anonymous
+        log_data = {
+            'path': request.path,
+            'method': request.method,
+            'status_code': response.status_code,
+            'user_agent': request.META.get('HTTP_USER_AGENT', 'unknown')[:50] # Truncate for privacy/size
+        }
+        
+        # In a real app, this would go to a database or analytics service
+        # Here we just log it to standard output/file
+        logger.info(f"ANALYTICS: {log_data}")
+
         return response

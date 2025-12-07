@@ -9,6 +9,18 @@ const Search = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        const searchUsers = async () => {
+            setLoading(true);
+            try {
+                const response = await api.get(`/auth/search/?q=${query}`);
+                setResults(response.data);
+            } catch (error) {
+                console.error("Search failed", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         const delayDebounceFn = setTimeout(() => {
             if (query.trim()) {
                 searchUsers();
@@ -19,18 +31,6 @@ const Search = () => {
 
         return () => clearTimeout(delayDebounceFn);
     }, [query]);
-
-    const searchUsers = async () => {
-        setLoading(true);
-        try {
-            const response = await api.get(`/auth/search/?q=${query}`);
-            setResults(response.data);
-        } catch (error) {
-            console.error("Search failed", error);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     return (
         <Layout>
@@ -57,25 +57,7 @@ const Search = () => {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                     {results.map(user => (
-                        <div key={user.user_id} style={{
-                            padding: '15px',
-                            border: '1px solid #333',
-                            borderRadius: '8px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '15px',
-                            cursor: 'pointer'
-                        }} onClick={() => window.location.href = `/profile/${user.user_id}`}>
-                            <img
-                                src={user.profile_photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random`}
-                                alt={user.name}
-                                style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }}
-                            />
-                            <div>
-                                <div style={{ fontWeight: 'bold' }}>{user.name}</div>
-                                <div style={{ color: '#888', fontSize: '0.9em' }}>@{user.user_id}</div>
-                            </div>
-                        </div>
+                        <UserCard key={user.user_id} user={user} />
                     ))}
                     {query && !loading && results.length === 0 && (
                         <div style={{ textAlign: 'center', color: '#888' }}>No users found</div>

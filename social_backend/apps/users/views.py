@@ -5,6 +5,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.hashers import check_password
 from django.db import models
+from django.db.models import Count
 from .serializers import UserSerializer, RegisterSerializer
 
 User = get_user_model()
@@ -56,9 +57,13 @@ class UserSearchView(generics.ListAPIView):
         query = self.request.query_params.get('q', '')
         if not query:
             return User.objects.none()
+        # Optimize with Count annotations to eliminate N+1 queries
         return User.objects.filter(
             models.Q(user_id__icontains=query) | 
             models.Q(name__icontains=query)
+        ).annotate(
+            follower_count=Count('followers', distinct=True),
+            following_count=Count('following', distinct=True)
         )[:20]
 
 class UserDetailView(generics.RetrieveAPIView):
@@ -67,7 +72,11 @@ class UserDetailView(generics.RetrieveAPIView):
     lookup_field = 'user_id'
     
     def get_queryset(self):
-        return User.objects.all()
+        # Optimize with Count annotations for follower/following counts
+        return User.objects.annotate(
+            follower_count=Count('followers', distinct=True),
+            following_count=Count('following', distinct=True)
+        )
 
 class FollowToggleView(APIView):
     permission_classes = (permissions.IsAuthenticated,)

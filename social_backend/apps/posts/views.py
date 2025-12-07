@@ -2,6 +2,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import get_user_model
+from django.db.models import Count, Exists, OuterRef
 from .models import Post, Like
 from .serializers import PostSerializer
 
@@ -15,8 +16,19 @@ class PostListCreateView(generics.ListCreateAPIView):
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
-        # Optimize with select_related to reduce database queries
-        return Post.objects.select_related('author', 'repost_of__author').prefetch_related('likes').order_by('-created_at')
+        # Optimize with select_related, prefetch_related, and annotate counts
+        # This eliminates N+1 queries by calculating counts in database
+        return Post.objects.select_related(
+            'author', 
+            'repost_of__author'
+        ).prefetch_related(
+            'likes'
+        ).annotate(
+            calculated_like_count=Count('likes', distinct=True),
+            calculated_repost_count=Count('reposts', distinct=True),
+            is_liked=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user)),
+            is_reposted=Exists(Post.objects.filter(repost_of=OuterRef('pk'), author=self.request.user))
+        ).order_by('-created_at')
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -45,8 +57,18 @@ class UserPostListView(generics.ListAPIView):
         except User.DoesNotExist:
             return Post.objects.none()
         
-        # Optimize with select_related and prefetch_related
-        return Post.objects.filter(author=user).select_related('author', 'repost_of__author').prefetch_related('likes').order_by('-created_at')
+        # Optimize with select_related, prefetch_related, and annotate counts
+        return Post.objects.filter(author=user).select_related(
+            'author', 
+            'repost_of__author'
+        ).prefetch_related(
+            'likes'
+        ).annotate(
+            calculated_like_count=Count('likes', distinct=True),
+            calculated_repost_count=Count('reposts', distinct=True),
+            is_liked=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user)),
+            is_reposted=Exists(Post.objects.filter(repost_of=OuterRef('pk'), author=self.request.user))
+        ).order_by('-created_at')
 
 class RepostView(generics.GenericAPIView):
     permission_classes = (permissions.IsAuthenticated,)
